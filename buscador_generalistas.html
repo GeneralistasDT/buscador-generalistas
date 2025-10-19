@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Generalistas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #00aeef 0%, #60bb46 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo img {
+            max-width: 300px;
+            height: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        .search-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            transition: border 0.3s;
+        }
+        
+        .search-input:focus {
+            border-color: #00aeef;
+        }
+        
+        .result-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: none;
+        }
+        
+        .result-card.show {
+            display: block;
+        }
+        
+        .generalista-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .generalista-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #00aeef;
+        }
+        
+        .generalista-details h2 {
+            color: #00aeef;
+            margin-bottom: 10px;
+        }
+        
+        .generalista-details p {
+            color: #666;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .contact-info {
+            margin-top: 20px;
+        }
+        
+        .contact-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .contact-item h3 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        
+        .contact-item p {
+            color: #666;
+            margin: 5px 0;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            display: none;
+        }
+        
+        .no-results.show {
+            display: block;
+        }
+        
+        a {
+            color: #00aeef;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="https://drive.google.com/uc?export=view&id=1dCZvZAWnXQw8h0UFOFeElJB1-uXYmk73" alt="Logo">
+        </div>
+        
+        <div class="search-box">
+            <h1>Buscador de Líder de Gestión del Talento</h1>
+            <input type="text" class="search-input" id="searchInput" placeholder="Escribe el nombre de tu unidad de negocio...">
+        </div>
+        
+        <div class="result-card" id="resultCard">
+            <div class="generalista-info">
+                <img src="" alt="Foto Generalista" class="generalista-photo" id="generalistaPhoto">
+                <div class="generalista-details">
+                    <h2 id="generalistaName"></h2>
+                    <p><strong>Unidad:</strong> <span id="unidadName"></span></p>
+                    <p><strong>Teléfono:</strong> <a href="" id="generalistaPhone"></a></p>
+                    <p><strong>Correo:</strong> <a href="" id="generalistaEmail"></a></p>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h3>Distrital</h3>
+                    <p id="distritalName"></p>
+                </div>
+                
+                <div class="contact-item">
+                    <h3>Jefe del Generalista</h3>
+                    <p><strong>Nombre:</strong> <span id="jefeName"></span></p>
+                    <p><strong>Teléfono:</strong> <a href="" id="jefePhone"></a></p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="no-results" id="noResults">
+            <p>No se encontraron resultados. Intenta con otra palabra clave.</p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <script>
+        let data = [];
+        const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSRW07qk9d2snG3CqCaeRXlOvSPmQ0NWDG4fltNT8Axb8TboWCEqUNO496w7w-Z85mw4vHK1cku8cys/pub?output=csv';
+        
+        // Cargar datos del Google Sheet
+        fetch(sheetURL)
+            .then(response => response.text())
+            .then(csv => {
+                Papa.parse(csv, {
+                    header: true,
+                    complete: function(results) {
+                        data = results.data;
+                    }
+                });
+            });
+        
+        // Búsqueda
+        const searchInput = document.getElementById('searchInput');
+        const resultCard = document.getElementById('resultCard');
+        const noResults = document.getElementById('noResults');
+        
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                resultCard.classList.remove('show');
+                noResults.classList.remove('show');
+                return;
+            }
+            
+            const result = data.find(row => 
+                row.Unidad && row.Unidad.toLowerCase().includes(searchTerm)
+            );
+            
+            if (result) {
+                showResult(result);
+            } else {
+                resultCard.classList.remove('show');
+                noResults.classList.add('show');
+            }
+        });
+        
+        function showResult(row) {
+            document.getElementById('generalistaPhoto').src = row.Foto_Generalista || '';
+            document.getElementById('generalistaName').textContent = row.Generalista || '';
+            document.getElementById('unidadName').textContent = row.Unidad || '';
+            
+            const phone = row.Telefono_Generalista || '';
+            document.getElementById('generalistaPhone').textContent = phone;
+            document.getElementById('generalistaPhone').href = 'tel:+502' + phone;
+            
+            const email = row.Correo_Generalista || '';
+            document.getElementById('generalistaEmail').textContent = email;
+            document.getElementById('generalistaEmail').href = 'mailto:' + email;
+            
+            document.getElementById('distritalName').textContent = row.Distrito || '';
+            document.getElementById('jefeName').textContent = row.Jefe || '';
+            
+            const jefePhone = row.Telefono_Jefe || '';
+            document.getElementById('jefePhone').textContent = jefePhone;
+            document.getElementById('jefePhone').href = 'tel:+502' + jefePhone;
+            
+            resultCard.classList.add('show');
+            noResults.classList.remove('show');
+        }
+    </script>
+</body>
+</html>
