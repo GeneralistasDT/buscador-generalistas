@@ -129,7 +129,7 @@
         .no-results {
             text-align: center;
             padding: 40px;
-            color: #ffffff;
+            color: white;
             display: none;
         }
         
@@ -144,6 +144,34 @@
         
         a:hover {
             text-decoration: underline;
+        }
+        
+        /* Estilos para WhatsApp */
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background-color: #25D366;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-left: 10px;
+        }
+        
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
+            text-decoration: none;
+        }
+        
+        .contact-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
         }
     </style>
 </head>
@@ -164,7 +192,13 @@
                 <div class="generalista-details">
                     <h2 id="generalistaName"></h2>
                     <p><strong>Unidad:</strong> <span id="unidadName"></span></p>
-                    <p><strong>Teléfono:</strong> <a href="" id="generalistaPhone"></a></p>
+                    <p class="contact-row">
+                        <strong>Teléfono:</strong> 
+                        <a href="" id="generalistaPhone"></a>
+                        <a href="" id="generalistaWhatsapp" class="whatsapp-btn" target="_blank">
+                            📱 WhatsApp
+                        </a>
+                    </p>
                     <p><strong>Correo:</strong> <a href="" id="generalistaEmail"></a></p>
                 </div>
             </div>
@@ -176,9 +210,15 @@
                 </div>
                 
                 <div class="contact-item">
-                    <h3>Jefe del Líder de Gestión</h3>
+                    <h3>Jefe del Generalista</h3>
                     <p><strong>Nombre:</strong> <span id="jefeName"></span></p>
-                    <p><strong>Teléfono:</strong> <a href="" id="jefePhone"></a></p>
+                    <p class="contact-row">
+                        <strong>Teléfono:</strong> 
+                        <a href="" id="jefePhone"></a>
+                        <a href="" id="jefeWhatsapp" class="whatsapp-btn" target="_blank">
+                            📱 WhatsApp
+                        </a>
+                    </p>
                 </div>
             </div>
         </div>
@@ -258,6 +298,10 @@
             document.getElementById('generalistaPhone').textContent = phone;
             document.getElementById('generalistaPhone').href = 'tel:+502' + phone;
             
+            // WhatsApp del Generalista
+            const whatsappURL = 'https://wa.me/502' + phone + '?text=Hola,%20necesito%20información';
+            document.getElementById('generalistaWhatsapp').href = whatsappURL;
+            
             const email = row.Correo_Generalista || '';
             document.getElementById('generalistaEmail').textContent = email;
             document.getElementById('generalistaEmail').href = 'mailto:' + email;
@@ -268,6 +312,10 @@
             const jefePhone = row.Telefono_Jefe || '';
             document.getElementById('jefePhone').textContent = jefePhone;
             document.getElementById('jefePhone').href = 'tel:+502' + jefePhone;
+            
+            // WhatsApp del Jefe
+            const jefeWhatsappURL = 'https://wa.me/502' + jefePhone + '?text=Hola,%20necesito%20información';
+            document.getElementById('jefeWhatsapp').href = jefeWhatsappURL;
             
             resultCard.classList.add('show');
             noResults.classList.remove('show');
