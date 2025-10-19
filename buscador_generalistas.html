@@ -232,14 +232,25 @@
         });
         
         function showResult(row) {
-            // Crear nombre de archivo de foto basado en el nombre del generalista
             const generalistaName = row.Generalista || '';
-            let photoFileName = generalistaName.toLowerCase()
-                .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // quitar acentos
-                .replace(/\s+/g, '_') // espacios a guiones bajos
-                + '.png';
             
-            document.getElementById('generalistaPhoto').src = photoFileName;
+            // Mapeo exacto de nombres a archivos
+            const photoMap = {
+                'Andrea Mendoza': 'Andrea_Mendoza.png',
+                'Carlos Reyes': 'Carlos_Reyes.png',
+                'Dinora López': 'Dinora_Lopez.png',
+                'Ana Gabriela Bran': 'Gabriela_Bran.png',
+                'Irma Leonardo': 'Irma_Leonardo.png',
+                'Irma Morales': 'Irma_Morales.png',
+                'Vanessa Wannam': 'Karla_Wannam.png',
+                'Luis Najarro': 'Luis_Najarro.png',
+                'Marvin Alvarado': 'Marvin_Alvarado.png',
+                'Neemias Estrada': 'Neemias_Estrada.png',
+                'Raul Cobon': 'Raul_Rodriguez.png',
+                'Rony Calel': 'Rony_Calel.png'
+            };
+            
+            document.getElementById('generalistaPhoto').src = photoMap[generalistaName] || 'logo.png';
             document.getElementById('generalistaName').textContent = generalistaName;
             document.getElementById('unidadName').textContent = row.Unidad || '';
             
