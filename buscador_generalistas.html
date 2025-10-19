@@ -232,8 +232,15 @@
         });
         
         function showResult(row) {
-            document.getElementById('generalistaPhoto').src = row.Foto_Generalista || '';
-            document.getElementById('generalistaName').textContent = row.Generalista || '';
+            // Crear nombre de archivo de foto basado en el nombre del generalista
+            const generalistaName = row.Generalista || '';
+            let photoFileName = generalistaName.toLowerCase()
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // quitar acentos
+                .replace(/\s+/g, '_') // espacios a guiones bajos
+                + '.png';
+            
+            document.getElementById('generalistaPhoto').src = photoFileName;
+            document.getElementById('generalistaName').textContent = generalistaName;
             document.getElementById('unidadName').textContent = row.Unidad || '';
             
             const phone = row.Telefono_Generalista || '';
