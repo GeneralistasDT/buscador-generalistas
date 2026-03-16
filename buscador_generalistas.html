@@ -213,13 +213,7 @@
                 <div class="contact-item">
                     <h3>Jefe del Líder de Gestión</h3>
                     <p><strong>Nombre:</strong> <span id="jefeName"></span></p>
-                    <p class="contact-row">
-                        <strong>Teléfono:</strong> 
-                        <a href="" id="jefePhone"></a>
-                        <a href="" id="jefeWhatsapp" class="whatsapp-btn" target="_blank">
-                            📱 WhatsApp
-                        </a>
-                    </p>
+                    <p><strong>Teléfono:</strong> <span id="jefePhone"></span></p>
                 </div>
             </div>
         </div>
@@ -312,11 +306,6 @@
             
             const jefePhone = row.Telefono_Jefe || '';
             document.getElementById('jefePhone').textContent = jefePhone;
-            document.getElementById('jefePhone').href = 'tel:+502' + jefePhone;
-            
-            // WhatsApp del Jefe
-            const jefeWhatsappURL = 'https://wa.me/502' + jefePhone + '?text=Hola,%20necesito%20información';
-            document.getElementById('jefeWhatsapp').href = jefeWhatsappURL;
             
             resultCard.classList.add('show');
             noResults.classList.remove('show');
