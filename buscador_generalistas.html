@@ -191,97 +191,7 @@
             margin-top: 2px;
         }
 
-        /* === Separador === */
-        .separador {
-            border: none;
-            border-top: 1px solid #eee;
-            margin: 18px 0 14px;
-        }
 
-        /* === Escalamiento al jefe === */
-        .escalar-box {
-            background: #fafafa;
-            border-radius: 8px;
-            padding: 14px 16px;
-            text-align: center;
-        }
-
-        .escalar-msg {
-            font-size: 13px;
-            color: #999;
-            margin-bottom: 8px;
-            line-height: 1.4;
-        }
-
-        .escalar-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            color: #00aeef;
-            font-size: 13px;
-            cursor: pointer;
-            border: none;
-            background: none;
-            font-family: inherit;
-            transition: color 0.2s;
-        }
-
-        .escalar-link:hover {
-            color: #008bbf;
-            text-decoration: underline;
-        }
-
-        .escalar-arrow {
-            font-size: 10px;
-        }
-
-        /* === Info del jefe (oculta) === */
-        .jefe-box {
-            background: #fafafa;
-            border-radius: 8px;
-            padding: 14px 16px;
-            display: none;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        .jefe-box.show {
-            display: block;
-        }
-
-        .jefe-titulo {
-            font-size: 12px;
-            color: #999;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
-
-        .jefe-tabla {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .jefe-tabla td {
-            padding: 5px 0;
-            font-size: 14px;
-        }
-
-        .jefe-tabla .label {
-            color: #888;
-            width: 80px;
-        }
-
-        .jefe-tabla .valor {
-            text-align: right;
-            color: #333;
-            user-select: all;
-            -webkit-user-select: all;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
 
         .no-results {
             text-align: center;
@@ -375,31 +285,7 @@
                 <div class="distrital-nombre" id="distritalName"></div>
             </div>
 
-            <!-- Separador -->
-            <hr class="separador">
 
-            <!-- Escalamiento al jefe -->
-            <div class="escalar-box" id="escalarBox">
-                <div class="escalar-msg">Si el líder de gestión no te contestó,<br>puedes contactar a su jefe:</div>
-                <button class="escalar-link" onclick="mostrarJefe()">
-                    Mostrar contacto del jefe <span class="escalar-arrow">▼</span>
-                </button>
-            </div>
-
-            <!-- Info del jefe (oculta) -->
-            <div class="jefe-box" id="jefeBox">
-                <div class="jefe-titulo">Jefe del líder de gestión</div>
-                <table class="jefe-tabla">
-                    <tr>
-                        <td class="label">Nombre</td>
-                        <td class="valor" id="jefeName"></td>
-                    </tr>
-                    <tr>
-                        <td class="label">Teléfono</td>
-                        <td class="valor" id="jefePhone"></td>
-                    </tr>
-                </table>
-            </div>
 
         </div>
         
@@ -483,21 +369,9 @@
             document.getElementById('generalistaEmail').href = 'mailto:' + email;
             
             document.getElementById('distritalName').textContent = row.Distrito || '';
-            document.getElementById('jefeName').textContent = row.Jefe || '';
-            
-            const jefePhone = row.Telefono_Jefe || '';
-            document.getElementById('jefePhone').textContent = jefePhone;
-            
-            document.getElementById('jefeBox').classList.remove('show');
-            document.getElementById('escalarBox').style.display = 'block';
             
             resultCard.classList.add('show');
             noResults.classList.remove('show');
-        }
-
-        function mostrarJefe() {
-            document.getElementById('escalarBox').style.display = 'none';
-            document.getElementById('jefeBox').classList.add('show');
         }
     </script>
 </body>
